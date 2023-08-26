@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import femaleCyborg from '/femaleCyborg.png'
+import logo from "/mouthlogo.png"
 import Form from 'react-bootstrap/Form';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 
 function App() {
-  const [file, setFile] = useState()
+  const [file, setFile] = useState({name:""})
   const [query, setQuery] = useState("")
   const [namespace, setNamespace] = useState("")
   const [talk, setTalk]= useState([])
@@ -33,10 +34,10 @@ function App() {
     if(result.status !== "ok"){
       alert("opps, something went wrong")
     } else {
+      setQuery("")
       setTalk(prev => [...prev, {id, role:"AI", content: result.content}])
       setId(id+1)
     }
-    setQuery()
   }
 
    async function handleSubmit(e){
@@ -80,28 +81,34 @@ function App() {
     console.log("HANDLE", e.target.files);
   }
   
-  // console.log("TALK",talk)
+  // console.log("FILE",file)
 
   return (
     <div className='main'>
-      <img className="cyborg" src={femaleCyborg} alt="female cyborg holding a laptop" />
+      
 
       <div className='formContainer'>
+        <div className='logoContainer'>
+        <img className="cyborg" src={femaleCyborg} alt="female cyborg holding a laptop" />
         <h1>TALK TO PDF</h1>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="file">Select a file</label>
+        </div>
+        
+        <form className="myfile" onSubmit={handleSubmit}>
+          <label htmlFor="file">Upload a file</label>
           <input type="file" id="file" name="file" onChange={handleChange} />
+          <p>{file.name.length>0 && file.name}</p>
           <button type="submit">Submit</button>
         </form>
+
         <div className='talkContainer'>
-          <div>{talk.map(item => {
+          {talk.map(item => {
             return (
-              <p key={item.id}>{item.content}</p>
-            )
-          })}</div>
-          <form onSubmit={handleQuery}>
-            <label htmlFor="query">Your query</label>
-            <input type="text" id="query" name="query" onChange={(e) => {setQuery(e.target.value)}} />
+              <p style={{fontStyle: item.role==="AI"&&"italic"}} key={item.id}>{item.content}</p> 
+          )
+          })}
+          <form className="query" onSubmit={handleQuery}>
+            {/* <label htmlFor="query">Your query </label> */}
+            <input required type="text" id="query" name="query" placeholder="Your query" onChange={(e) => {setQuery(e.target.value)}} value={query}/>
             <button type="submit">Submit</button>
           </form>
         </div>

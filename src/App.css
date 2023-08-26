@@ -1,13 +1,76 @@
 .main{
-  margin:20px;
+  margin: 0 20px;
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 30px;
+  /* height: 100vh; */
+  background-color: #810CA8;
+}
+
+.logoContainer{
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  margin-top:10px;
+}
+.logo{
+  width: 100px;
+  padding: 10px;
 }
 
 .cyborg{
   border-radius: 50%;
   background-color: #E5B8F4;
-  width:300px;
+  width:150px;
+  margin: 20px;
+}
+.myfile{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin: 0 10px 0 10px;
+  background-color: #2D033B;
+  outline: 0;
+  color:#E5B8F4;
+  border-radius: 10px;
+  border: none;
+  transition: 0.5s;
+  width:270px;
+  
+}
+.myfile input[type="file"]{
+opacity: 0;
+}
+.myfile label{
+  transition: 0.5s;
+  cursor:pointer;
+  border-radius: 15px;
+  padding:10px;
+  background-color: #e5b8f4;
+  color: #2D033B;
+}
+.myfile label:hover{
+  background-color: #2D033B;
+  color: #e5b8f4;
+}
+.myfile button{
+  background-color: transparent;
+  border: none;
+  background-color: #e5b8f4;
+  color: #2D033B;
+  transition: 0.5s;
+  border-radius: 15px;
+  padding:10px;
+  margin-top:10px;
+}
+.myfile button:hover{
+  background-color: #2D033B;
+  color: #e5b8f4;
+  cursor: pointer;
 }
 
 .formContainer{
@@ -15,6 +78,84 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-grow: 3;
-  gap: 50px;
+  width: 600px;
+  gap: 30px;
+  padding:20px;
+  background-color: #810CA8;
+}
+.talkContainer{
+  min-height:200px;
+  display:flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.talkContainer p{
+  width:500px;
+  padding:10px 10px 10px 40px;
+  word-wrap: break-word;
+}
+
+.query{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap:20px;
+  margin-top: 30px;
+}
+.query input{
+  background-color: transparent;
+  border: 0;
+  border-bottom: solid 2px #E5B8F4;
+  color: #E5B8F4;
+  width: 30vw;
+  font-size: 18px;
+}
+.query input[type="text"]{
+  outline: 0;
+}
+.query input[type="text"]::placeholder{
+  color: #E5B8F4;
+}
+.query button{
+  padding: 10px;
+  margin: 0 10px 0 10px;
+  background-color: #2D033B;
+  outline: 0;
+  color:#E5B8F4;
+  border-radius: 10px;
+  border: none;
+  transition: 0.5s;
+  width:200px;
+}
+.query button:hover{
+  background-color: #e5b8f4;
+  color: #2D033B;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 850px) {
+  .cyborg{
+    width:200px;
+  }
+}
+@media only screen and (max-width: 750px) {
+  .cyborg{
+    width:150px;
+  }
+  .formContainer{
+    width:400px;
+  }
+  .talkContainer p{
+    width:400px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .cyborg{
+    display: none;
+  }
+  .query input{
+    width:50vw;
+  }
 }
