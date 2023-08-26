@@ -13,14 +13,15 @@ function App() {
   const [talk, setTalk]= useState([])
   const [id, setId]=useState(0)
   const [sendData, setSendData] = useState(false)
-  const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com")
-  // const [url, setUrl] = useState("http://localhost:5000")
+  // const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com")
+  const [url, setUrl] = useState("http://localhost:5000")
 
   useEffect(() =>{
     if (id>0){
       getQuery()
     }
   },[sendData])
+
 
   async function getQuery(){
     const response = await fetch(url, {
@@ -60,9 +61,10 @@ function App() {
   if(result.status !== "ok"){
     alert("opps, something went wrong")
   } else {
-    
     setNamespace(result.namespace)
-    
+    setTimeout(() => {
+      deleteDB(result.namespace,result.destination_file_name)
+    }, 6000);
   }
   console.log("ALOO", result);
   }
@@ -81,6 +83,25 @@ function App() {
   function handleChange(e) {
     setFile( e.target.files[0])
     console.log("HANDLE", e.target.files);
+  }
+
+  async function deleteDB(namespace, destinationFileName){
+    console.log("INIT DELETION",namespace)
+    console.log("DESTINATION", destinationFileName)
+    const response = await fetch(`${url}/delete`, {
+      method: "POST",
+      mode: "cors",
+      body: JSON.stringify({"namespace":namespace, "destinationFileName": destinationFileName}),
+      headers: {
+        "Content-Type": "application/json"
+      }
+      });
+      const deletion = await response.json();
+      console.log("DELETION",deletion)
+      if(result.status !== "ok"){
+        console.log("DELETE DB, opps, something went wrong")
+      } 
+    
   }
   
   // console.log("FILE",file)
