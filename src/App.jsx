@@ -13,6 +13,8 @@ function App() {
   const [talk, setTalk]= useState([])
   const [id, setId]=useState(0)
   const [sendData, setSendData] = useState(false)
+  const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com")
+  // const [url, setUrl] = useState("http://localhost:5000")
 
   useEffect(() =>{
     if (id>0){
@@ -21,7 +23,7 @@ function App() {
   },[sendData])
 
   async function getQuery(){
-    const response = await fetch("http://localhost:5000/", {
+    const response = await fetch(url, {
     method: "POST",
     mode: "cors",
     body: JSON.stringify({"query":query, "namespace": namespace}),
@@ -46,7 +48,7 @@ function App() {
     const data = new FormData()
     data.append("file", file)
     console.log("DATA", data)
-    const response = await fetch("http://localhost:5000/upload", {
+    const response = await fetch(`${url}/upload`, {
     method: "POST",
     mode: "cors",
     body: data,
