@@ -1,24 +1,24 @@
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
+import { useEffect, useRef, useState } from 'react'
 import femaleCyborg from '/femaleCyborg.png'
-import logo from "/mouthlogo.png"
-import Form from 'react-bootstrap/Form';
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 
 function App() {
   const [file, setFile] = useState({name:""})
+  const [fileResult,setFileResult] = useState(false)
   const [query, setQuery] = useState("")
   const [namespace, setNamespace] = useState("")
   const [talk, setTalk]= useState([])
   const [id, setId]=useState(0)
   const [sendData, setSendData] = useState(false)
-  const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com")
-  // const [url, setUrl] = useState("http://localhost:5000")
+  const [loading, setLoading] = useState(false)
+  const viewRef= useRef()
+  // const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com")
+  const [url, setUrl] = useState("http://localhost:5000")
 
   useEffect(() =>{
     if (id>0){
       getQuery()
+      
     }
   },[sendData])
 
@@ -32,19 +32,24 @@ function App() {
       "Content-Type": "application/json"
     }
     });
+    setQuery("")
     const result = await response.json();
     console.log("result",result)
     if(result.status !== "ok"){
       alert("opps, something went wrong")
     } else {
-      setQuery("")
+      setTimeout(() =>{
+        viewRef.current?.scrollIntoView({ behavior: 'smooth' });
+      },500)
       setTalk(prev => [...prev, {id, role:"AI", content: result.content}])
       setId(id+1)
     }
+    setLoading(false)
   }
 
    async function handleSubmit(e){
     e.preventDefault()
+    setLoading(true)
     console.log("SUBMIT", file)
     const data = new FormData()
     data.append("file", file)
@@ -62,10 +67,12 @@ function App() {
     alert("opps, something went wrong")
   } else {
     setNamespace(result.namespace)
+    setFileResult(true)
     setTimeout(() => {
       deleteDB(result.namespace,result.destination_file_name)
     }, 6000);
   }
+  setLoading(false)
   console.log("ALOO", result);
   }
 
@@ -78,6 +85,8 @@ function App() {
     setTalk(prev => [...prev, {id,role:"human", content: query}])
     setId(id+1)
     setSendData(!sendData)
+    
+    setLoading(true)
   }
 
   function handleChange(e) {
@@ -115,25 +124,29 @@ function App() {
         <img className="cyborg" src={femaleCyborg} alt="female cyborg holding a laptop" />
         <h1>TALK TO PDF</h1>
         </div>
+
+        <hr></hr>
         
-        <form className="myfile" onSubmit={handleSubmit}>
-          <label htmlFor="file">Upload a file</label>
-          <input type="file" id="file" name="file" onChange={handleChange} />
-          <p>{file.name.length>0 && file.name}</p>
-          <button type="submit">Submit</button>
+        <form style={{display: fileResult&&"none"}} className="myfile" onSubmit={handleSubmit}>
+          <label htmlFor="file" style={{display: file.name.length>0 &&"none"}}>Upload a file</label>
+          <input type="file" style={{display: file.name.length>0 &&"none"}} id="file" name="file" onChange={handleChange} />
+          <p style={{paddingBottom:"15px"}}>{file.name.length>0 && file.name}</p>
+          {loading ? <div className="loader"></div>:<button type="submit">Submit</button>}
         </form>
 
         <div className='talkContainer'>
           {talk.map(item => {
             return (
-              <p style={{fontStyle: item.role==="AI"&&"italic"}} key={item.id}>{item.content}</p> 
+              <p style={{fontStyle: item.role==="AI"&&"italic",whiteSpace:"pre-wrap"}} key={item.id}>{item.content}</p> 
           )
           })}
           <form className="query" onSubmit={handleQuery}>
             {/* <label htmlFor="query">Your query </label> */}
-            <input required type="text" id="query" name="query" placeholder="Your query" onChange={(e) => {setQuery(e.target.value)}} value={query}/>
-            <button type="submit">Submit</button>
+            <input required type="text" id="query" name="query" placeholder="Please enter your query" onChange={(e) => {setQuery(e.target.value)}} value={query}/>
+            {loading?<div className="loader"></div>:<button type="submit">Submit</button>}
           </form>
+          
+          <div ref={viewRef}></div>
         </div>
         
       </div>

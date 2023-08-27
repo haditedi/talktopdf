@@ -11,8 +11,13 @@ body {
   max-width: 1000px;
   font-size: 20px;
   min-height: 100vh;
+  font-family: Poppins, sans-serif;
+  font-size: 20px;  
 }
-
+h1{
+  font-family: 'Abril Fatface', serif;
+  font-size: 46px;  
+}
 a {
   color: inherit;
   text-decoration: none;
