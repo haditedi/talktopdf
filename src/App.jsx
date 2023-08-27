@@ -12,8 +12,8 @@ function App() {
   const [sendData, setSendData] = useState(false)
   const [loading, setLoading] = useState(false)
   const viewRef= useRef()
-  // const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com")
-  const [url, setUrl] = useState("http://localhost:5000")
+  const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com")
+  // const [url, setUrl] = useState("http://localhost:5000")
 
   useEffect(() =>{
     if (id>0){
@@ -85,7 +85,6 @@ function App() {
     setTalk(prev => [...prev, {id,role:"human", content: query}])
     setId(id+1)
     setSendData(!sendData)
-    
     setLoading(true)
   }
 
@@ -117,8 +116,6 @@ function App() {
 
   return (
     <div className='main'>
-      
-
       <div className='formContainer'>
         <div className='logoContainer'>
         <img className="cyborg" src={femaleCyborg} alt="female cyborg holding a laptop" />
