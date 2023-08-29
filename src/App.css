@@ -6,6 +6,11 @@
   background-color: #810CA8;
   min-height: 100vh;
 }
+.pdf{
+  font-family: 'Leckerli One', cursive;
+  font-size:80px;
+  height:80px
+}
 
 .logoContainer{
   display: flex;
@@ -90,6 +95,15 @@ hr {
     font-size: 50px;
     color: #2D033B;
   }
+}
+
+.info{
+  margin:15px;
+  background-color: #2D033B;
+  text-align: center;
+  width: 270px;
+  border-radius: 10px;
+  padding:10px;
 }
 .talkContainer{
   min-height:200px;

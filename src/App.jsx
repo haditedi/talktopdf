@@ -11,9 +11,10 @@ function App() {
   const [id, setId]=useState(0)
   const [sendData, setSendData] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [info, setInfo] = useState("")
   const viewRef= useRef()
-  const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com")
-  // const [url, setUrl] = useState("http://localhost:5000")
+  // const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com")
+  const [url, setUrl] = useState("http://localhost:5000")
 
   useEffect(() =>{
     if (id>0){
@@ -21,7 +22,6 @@ function App() {
       
     }
   },[sendData])
-
 
   async function getQuery(){
     const response = await fetch(url, {
@@ -89,8 +89,17 @@ function App() {
   }
 
   function handleChange(e) {
+    // const fileSize = e.target.files[0].size
+    // if (fileSize> 300000){
+    //   setInfo("Sorry, file size too big")
+    //   setTimeout(() => {
+    //     setInfo("")
+    //   },2000)
+    //   console.log("TOO BIG")
+    //   return
+    // }
     setFile( e.target.files[0])
-    console.log("HANDLE", e.target.files);
+    console.log("SIZE", e.target.files[0].size);
   }
 
   async function deleteDB(namespace, destinationFileName){
@@ -119,7 +128,7 @@ function App() {
       <div className='formContainer'>
         <div className='logoContainer'>
         <img className="cyborg" src={femaleCyborg} alt="female cyborg holding a laptop" />
-        <h1>TALK TO PDF</h1>
+        <h1>TALK TO <span className="pdf">PDF</span></h1>
         </div>
 
         <hr></hr>
@@ -128,8 +137,10 @@ function App() {
           <label htmlFor="file" style={{display: file.name.length>0 &&"none"}}>Upload a file</label>
           <input type="file" style={{display: file.name.length>0 &&"none"}} id="file" name="file" onChange={handleChange} />
           <p style={{paddingBottom:"15px"}}>{file.name.length>0 && file.name}</p>
+         
           {loading ? <div className="loader"></div>:<button type="submit">Submit</button>}
         </form>
+        {info.length > 0 && <div className='info'>{info}</div>}
 
         <div className='talkContainer'>
           {talk.map(item => {
@@ -139,7 +150,7 @@ function App() {
           })}
           <form className="query" onSubmit={handleQuery}>
             {/* <label htmlFor="query">Your query </label> */}
-            <input required type="text" id="query" name="query" placeholder="Please enter your query" onChange={(e) => {setQuery(e.target.value)}} value={query}/>
+            <input required type="text" id="query" name="query" placeholder={namespace.length>0?"Please enter your query":"Please upload a pdf file"} onChange={(e) => {setQuery(e.target.value)}} value={query}/>
             {loading?<div className="loader"></div>:<button type="submit">Submit</button>}
           </form>
           
