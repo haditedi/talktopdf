@@ -89,16 +89,17 @@ function App() {
   }
 
   function handleChange(e) {
-    // const fileSize = e.target.files[0].size
-    // if (fileSize> 300000){
-    //   setInfo("Sorry, file size too big")
-    //   setTimeout(() => {
-    //     setInfo("")
-    //   },2000)
-    //   console.log("TOO BIG")
-    //   return
-    // }
-    setFile( e.target.files[0])
+
+    const size = e.target.files[0].size
+    if (size < 10000000){
+      setFile( e.target.files[0])
+    } else {
+      setInfo("File too big. Maximum 10mb")
+      setTimeout(() =>{
+        setInfo("")
+      },2500)
+    }
+    
     console.log("SIZE", e.target.files[0].size);
   }
 
