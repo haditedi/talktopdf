@@ -114,8 +114,8 @@ function App() {
   }
 
   async function deleteDB(namespace, destinationFileName){
-    console.log("INIT DELETION",namespace)
-    console.log("DESTINATION", destinationFileName)
+    // console.log("INIT DELETION",namespace)
+    // console.log("DESTINATION", destinationFileName)
     const response = await fetch(`${url}/delete`, {
       method: "POST",
       mode: "cors",
@@ -124,11 +124,11 @@ function App() {
         "Content-Type": "application/json"
       }
       });
-      const deletion = await response.json();
-      console.log("DELETION",deletion)
-      if(result.status !== "ok"){
-        console.log("DELETE DB, opps, something went wrong")
-      } 
+      // const deletion = await response.json();
+      // console.log("DELETION",deletion)
+      // if(result.status !== "ok"){
+      //   console.log("DELETE DB, opps, something went wrong")
+      // } 
     
   }
   
@@ -136,7 +136,7 @@ function App() {
   const variants = {
     open: { opacity: 1, x: 0 },
     closed: { opacity: 0, x: "-100%" },
-    } 
+  } 
 
   return (
     <div className='main'>
