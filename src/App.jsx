@@ -35,7 +35,7 @@ function App() {
     });
     setQuery("")
     const result = await response.json();
-    console.log("result",result)
+    // console.log("result",result)
     if(result.status !== "ok"){
       alert("opps, something went wrong")
     } else {
@@ -52,10 +52,10 @@ function App() {
     e.preventDefault()
     setInfo("")
     setLoading(true)
-    console.log("SUBMIT", file)
+    // console.log("SUBMIT", file)
     const data = new FormData()
     data.append("file", file)
-    console.log("DATA", data)
+    // console.log("DATA", data)
     setTimeout(() =>{
       setInfo("Processing")
     },3000)
@@ -72,7 +72,7 @@ function App() {
     // }
     })
       const result = await response.json();
-      console.log("RESULT",result.status)
+      // console.log("RESULT",result.status)
       setInfo("File Uploaded...")
       setTimeout(() =>{
         setInfo("")
@@ -92,10 +92,6 @@ function App() {
 
   function handleQuery(e){
     e.preventDefault()
-    if (namespace.length === 0){
-      alert("You need to upload a pdf")
-      return
-    }
     setTalk(prev => [...prev, {id,role:"human", content: query}])
     setId(id+1)
     setSendData(!sendData)
@@ -114,7 +110,7 @@ function App() {
       },2500)
     }
     
-    console.log("SIZE", e.target.files[0].size);
+    // console.log("SIZE", e.target.files[0].size);
   }
 
   async function deleteDB(namespace, destinationFileName){
