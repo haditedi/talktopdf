@@ -54,6 +54,7 @@ function App() {
     const data = new FormData()
     data.append("file", file)
     console.log("DATA", data)
+    try{
     const response = await fetch(`${url}/upload`, {
     method: "POST",
     mode: "cors",
@@ -61,10 +62,21 @@ function App() {
     // headers: {
     //   "Content-Type": "multipart/form-data"
     // }
-  });
-  const result = await response.json();
+  })} catch(error){
+    setInfo("opps something went wrong",error)
+    setLoading(false)
+    setTimeout(() =>{
+      setInfo("")
+    },2500)
+  }  
+    const result = await response.json();
+    console.log("RESULT",result.status)
   if(result.status !== "ok"){
-    alert("opps, something went wrong")
+    setInfo("opps something went wrong")
+    setTimeout(() =>{
+      setInfo("")
+    },2500)
+    setLoading(false)
   } else {
     setNamespace(result.namespace)
     setFileResult(true)
@@ -75,9 +87,8 @@ function App() {
     setTimeout(() => {
       deleteDB(result.namespace,result.destination_file_name)
     }, 2000);
+    setLoading(false)
   }
-  setLoading(false)
-  console.log("ALOO", result);
   }
 
   function handleQuery(e){
@@ -93,9 +104,8 @@ function App() {
   }
 
   function handleChange(e) {
-
     const size = e.target.files[0].size
-    if (size < 10000000){
+    if (size < 10*1024*1024){
       setFile( e.target.files[0])
     } else {
       setInfo("File too big. Maximum 10mb")
