@@ -10,7 +10,7 @@ hr.ruler{
   width:200px;
   border-radius: 10px;;
   border: 5px solid #2D033B;
-  margin:20px;
+  margin:20px 20px 50px;
 }
 .pdf{
   font-family: 'Leckerli One', cursive;
@@ -55,32 +55,28 @@ hr.ruler{
 opacity: 0;
 }
 .myfile label{
-  transition: 0.5s;
   cursor:pointer;
   border-radius: 15px;
   padding:10px;
   background-color: #e5b8f4;
   color: #2D033B;
 }
-.myfile label:hover{
-  background-color: #2D033B;
-  color: #e5b8f4;
-}
+
 .myfile button{
   background-color: transparent;
   border: none;
   background-color: #e5b8f4;
   color: #2D033B;
-  transition: 0.5s;
   border-radius: 15px;
   padding:10px;
   margin-top:10px;
+  font-size: 18px;
 }
-.myfile button:hover{
+/* .myfile button:hover{
   background-color: #2D033B;
   color: #e5b8f4;
   cursor: pointer;
-}
+} */
 
 .formContainer{
   display: flex;
@@ -134,6 +130,7 @@ opacity: 0;
 }
 .query input[type="text"]::placeholder{
   color: #E5B8F4;
+  opacity: 0.5;
 }
 .query button{
   padding: 10px;

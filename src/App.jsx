@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import femaleCyborg from '/femaleCyborg.png'
+import { motion } from "framer-motion"
 import './App.css'
 
 function App() {
@@ -49,46 +50,44 @@ function App() {
 
    async function handleSubmit(e){
     e.preventDefault()
+    setInfo("")
     setLoading(true)
     console.log("SUBMIT", file)
     const data = new FormData()
     data.append("file", file)
     console.log("DATA", data)
+    setTimeout(() =>{
+      setInfo("Processing")
+    },3000)
+    setTimeout(() =>{
+      setInfo("")
+    },6000)
     try{
-    const response = await fetch(`${url}/upload`, {
-    method: "POST",
-    mode: "cors",
-    body: data,
+      const response = await fetch(`${url}/upload`, {
+      method: "POST",
+      mode: "cors",
+      body: data,
     // headers: {
     //   "Content-Type": "multipart/form-data"
     // }
-  })} catch(error){
+    })
+      const result = await response.json();
+      console.log("RESULT",result.status)
+      setInfo("File Uploaded...")
+      setTimeout(() =>{
+        setInfo("")
+      },2500)
+      setLoading(false)
+      setNamespace(result.namespace)
+      setFileResult(true)
+      deleteDB(result.namespace,result.destination_file_name)
+  } catch(error){
     setInfo("opps something went wrong",error)
     setLoading(false)
     setTimeout(() =>{
       setInfo("")
     },2500)
-  }  
-    const result = await response.json();
-    console.log("RESULT",result.status)
-  if(result.status !== "ok"){
-    setInfo("opps something went wrong")
-    setTimeout(() =>{
-      setInfo("")
-    },2500)
-    setLoading(false)
-  } else {
-    setNamespace(result.namespace)
-    setFileResult(true)
-    setInfo("Data Uploaded")
-    setTimeout(()=>{
-      setInfo("")
-    },2500)
-    setTimeout(() => {
-      deleteDB(result.namespace,result.destination_file_name)
-    }, 2000);
-    setLoading(false)
-  }
+  }    
   }
 
   function handleQuery(e){
@@ -105,10 +104,11 @@ function App() {
 
   function handleChange(e) {
     const size = e.target.files[0].size
-    if (size < 10*1024*1024){
+    if (size < 5*1024*1024){
       setFile( e.target.files[0])
+      setInfo("Ready to Submit")
     } else {
-      setInfo("File too big. Maximum 10mb")
+      setInfo("File too big. Maximum 5mb")
       setTimeout(() =>{
         setInfo("")
       },2500)
@@ -137,6 +137,10 @@ function App() {
   }
   
   // console.log("FILE",file)
+  const variants = {
+    open: { opacity: 1, x: 0 },
+    closed: { opacity: 0, x: "-100%" },
+    } 
 
   return (
     <div className='main'>
@@ -150,12 +154,14 @@ function App() {
         
         <form style={{display: fileResult&&"none"}} className="myfile" onSubmit={handleSubmit}>
           <label htmlFor="file" style={{display: file.name.length>0 &&"none"}}>Upload a file</label>
-          <input type="file" style={{display: file.name.length>0 &&"none"}} id="file" name="file" onChange={handleChange} />
+          <input type="file" style={{display: file.name.length>0 &&"none"}} id="file" name="file" required onChange={handleChange} />
           <p style={{paddingBottom:"15px"}}>{file.name.length>0 && file.name}</p>
          
-          {loading ? <div className="loader"></div>:<button type="submit">Submit</button>}
+          {loading ? <div className="loader"></div>:<motion.button whileHover={{scale:1.3}} whileTap={{scale:0.9}} 
+          type="submit">Submit</motion.button>}
         </form>
-        {info.length > 0 && <div className='info'>{info}</div>}
+        <motion.div className="info" initial={{opacity:0}} animate={info.length>0?"open":"closed"} 
+        variants={variants}>{info}</motion.div>
 
         <div className='talkContainer'>
           {talk.map(item => {
@@ -164,7 +170,8 @@ function App() {
           )
           })}
           <form className="query" onSubmit={handleQuery}>
-            <input required type="text" id="query" name="query" placeholder={namespace.length>0?"Please enter your query":"Data will be deleted after 2 hours"} onChange={(e) => {setQuery(e.target.value)}} value={query}/>
+            <input style={{textAlign:"center"}} required type="text" id="query" name="query" placeholder={namespace.length>0?"Please enter your query":"Data will be deleted after 2 hours"} 
+            onChange={(e) => {setQuery(e.target.value)}} value={query}/>
             {loading && <div style={{display: namespace.length>0?"block":"none"}} className="loader"></div>}
             {!loading&&<button style={{display: namespace.length>0?"block":"none"}} type="submit">Submit</button>}
           </form>
