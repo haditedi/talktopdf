@@ -13,8 +13,8 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [info, setInfo] = useState("")
   const viewRef= useRef()
-  const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com")
-  // const [url, setUrl] = useState("http://localhost:5000")
+  // const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com")
+  const [url, setUrl] = useState("http://localhost:5000")
 
   useEffect(() =>{
     if (id>0){
@@ -68,9 +68,13 @@ function App() {
   } else {
     setNamespace(result.namespace)
     setFileResult(true)
+    setInfo("Data Uploaded")
+    setTimeout(()=>{
+      setInfo("")
+    },2500)
     setTimeout(() => {
       deleteDB(result.namespace,result.destination_file_name)
-    }, 6000);
+    }, 2000);
   }
   setLoading(false)
   console.log("ALOO", result);
@@ -132,7 +136,7 @@ function App() {
         <h1>TALK TO <span className="pdf">PDF</span></h1>
         </div>
 
-        <hr></hr>
+        <hr className='ruler'></hr>
         
         <form style={{display: fileResult&&"none"}} className="myfile" onSubmit={handleSubmit}>
           <label htmlFor="file" style={{display: file.name.length>0 &&"none"}}>Upload a file</label>
@@ -151,10 +155,12 @@ function App() {
           })}
           <form className="query" onSubmit={handleQuery}>
             {/* <label htmlFor="query">Your query </label> */}
-            <input required type="text" id="query" name="query" placeholder={namespace.length>0?"Please enter your query":"Please upload a pdf file"} onChange={(e) => {setQuery(e.target.value)}} value={query}/>
-            {loading?<div className="loader"></div>:<button type="submit">Submit</button>}
+            <input required type="text" id="query" name="query" placeholder={namespace.length>0?"Please enter your query":"Data will be deleted after 2 hours"} onChange={(e) => {setQuery(e.target.value)}} value={query}/>
+            {loading && <div style={{display: namespace.length>0?"block":"none"}} className="loader"></div>}
+            {!loading&&<button style={{display: namespace.length>0?"block":"none"}} type="submit">Submit</button>}
           </form>
-          
+          <br />
+          <br />
           <div ref={viewRef}></div>
         </div>
         
