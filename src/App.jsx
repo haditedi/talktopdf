@@ -142,8 +142,8 @@ function App() {
     <div className='main'>
       <div className='formContainer'>
         <div className='logoContainer'>
-        <img className="cyborg" src={femaleCyborg} alt="female cyborg holding a laptop" />
-        <h1>TALK TO <span className="pdf">PDF</span></h1>
+          <img className="cyborg" src={femaleCyborg} alt="female cyborg holding a laptop" />
+          <h1>TALK TO <span className="pdf">PDF</span></h1>
         </div>
 
         <hr className='ruler'></hr>

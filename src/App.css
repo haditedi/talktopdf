@@ -24,10 +24,10 @@ hr.ruler{
   justify-content: center;
   align-items: center;
 }
-.logo{
+/* .logo{
   width: 100px;
   padding: 10px;
-}
+} */
 
 .cyborg{
   border-radius: 50%;
@@ -186,5 +186,12 @@ opacity: 0;
   }
   .query input{
     width:50vw;
+  }
+  .query input[type="text"]::placeholder{
+    font-size: 12px;
+  }
+
+  .logoContainer h1{
+    text-align: center;
   }
 }
