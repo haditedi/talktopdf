@@ -168,6 +168,9 @@ opacity: 0;
   .cyborg{
     width:200px;
   }
+  .query input[type="text"]::placeholder{
+    font-size: 12px;
+  }
 }
 @media only screen and (max-width: 750px) {
   .cyborg{
@@ -187,10 +190,6 @@ opacity: 0;
   .query input{
     width:50vw;
   }
-  .query input[type="text"]::placeholder{
-    font-size: 12px;
-  }
-
   .logoContainer h1{
     text-align: center;
   }

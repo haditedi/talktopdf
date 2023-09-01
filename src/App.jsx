@@ -99,6 +99,15 @@ function App() {
   }
 
   function handleChange(e) {
+    const extension = e.target.files[0].name.slice(-3).toLowerCase()
+    if (extension !== "pdf"){
+      setInfo("Only pdf file please")
+      setTimeout(() =>{
+        setInfo("")
+      },2500)
+      return;
+    }
+    console.log(extension)
     const size = e.target.files[0].size
     if (size < 5*1024*1024){
       setFile( e.target.files[0])
