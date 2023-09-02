@@ -80,7 +80,7 @@ function App() {
       setLoading(false)
       setNamespace(result.namespace)
       setFileResult(true)
-      deleteDB(result.namespace,result.destination_file_name)
+      
   } catch(error){
     setInfo("opps something went wrong",error)
     setLoading(false)
@@ -122,25 +122,7 @@ function App() {
     // console.log("SIZE", e.target.files[0].size);
   }
 
-  async function deleteDB(namespace, destinationFileName){
-    // console.log("INIT DELETION",namespace)
-    // console.log("DESTINATION", destinationFileName)
-    const response = await fetch(`${url}/delete`, {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify({"namespace":namespace, "destinationFileName": destinationFileName}),
-      headers: {
-        "Content-Type": "application/json"
-      }
-      });
-      // const deletion = await response.json();
-      // console.log("DELETION",deletion)
-      // if(result.status !== "ok"){
-      //   console.log("DELETE DB, opps, something went wrong")
-      // } 
-    
-  }
-  
+ 
   // console.log("FILE",file)
   const variants = {
     open: { opacity: 1, x: 0 },
@@ -175,7 +157,7 @@ function App() {
           )
           })}
           <form className="query" onSubmit={handleQuery}>
-            <input style={{textAlign:"center"}} required type="text" id="query" name="query" placeholder={namespace.length>0?"Please enter your query":"Data will be deleted after 2 hours"} 
+            <input style={{textAlign:"center"}} required type="text" id="query" name="query" placeholder={namespace.length>0?"Please enter your query":"Data deletion from 00:00 every 6 hours"} 
             onChange={(e) => {setQuery(e.target.value)}} value={query}/>
             {loading && <div style={{display: namespace.length>0?"block":"none"}} className="loader"></div>}
             {!loading&&<button style={{display: namespace.length>0?"block":"none"}} type="submit">Submit</button>}
