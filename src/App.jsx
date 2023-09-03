@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import femaleCyborg from '/femaleCyborg.png'
 import { motion } from "framer-motion"
 import './App.css'
+import Footer from './components/Footer'
 
 function App() {
   const [file, setFile] = useState({name:""})
@@ -166,10 +167,10 @@ function App() {
           <br />
           <div ref={viewRef}></div>
         </div>
-        
+        <Footer />
       </div>
       
-        
+       
     </div>
   )
 }
