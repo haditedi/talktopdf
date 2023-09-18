@@ -15,8 +15,8 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [info, setInfo] = useState("")
   const viewRef= useRef()
-  // const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com")
-  const [url, setUrl] = useState("http://localhost:5000")
+  const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com")
+  // const [url, setUrl] = useState("http://localhost:5000")
 
   useEffect(() =>{
     if (id>0){
@@ -158,7 +158,7 @@ function App() {
           )
           })}
           <form className="query" onSubmit={handleQuery}>
-            <input style={{textAlign:"center"}} required type="text" id="query" name="query" placeholder={namespace.length>0?"Please enter your query":"Data deletion from 00:00 every 6 hours"} 
+            <input style={{textAlign:"center"}} required type="text" id="query" name="query" placeholder={namespace.length>0?"Please enter your query":"Data deletion every day"} 
             onChange={(e) => {setQuery(e.target.value)}} value={query}/>
             {loading && <div style={{display: namespace.length>0?"block":"none"}} className="loader"></div>}
             {!loading&&<button style={{display: namespace.length>0?"block":"none"}} type="submit">Submit</button>}
