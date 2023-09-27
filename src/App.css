@@ -6,6 +6,9 @@
   background-color: #810CA8;
   min-height: 100vh;
 }
+.formContainer{
+  flex-grow: 1;
+}
 .ruler{
   text-align: center;
   width:100px;
@@ -140,12 +143,6 @@
   }
 }
 @media only screen and (max-width: 600px) {
-  .formContainer{
-    flex-grow: 1;
-  }
-  /* .cyborg{
-    display: none;
-  } */
   .pdf{
     font-size: 40px;
   }

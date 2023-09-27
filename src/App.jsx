@@ -19,8 +19,8 @@ function App() {
   const [info, setInfo] = useState("")
   
   const viewRef= useRef()
-  // const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com")
-  const [url, setUrl] = useState("http://192.168.1.108:5000")
+  const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com")
+  // const [url, setUrl] = useState("http://192.168.1.108:5000")
   // const [url, setUrl] = useState("http://localhost:5000")
 
   useEffect(() =>{
@@ -31,7 +31,13 @@ function App() {
   },[sendData])
 
   const onDrop = useCallback(async acceptedFiles => {
-    console.log(acceptedFiles[0])
+    if (acceptedFiles[0].size > 1000*1024){
+      setInfo("file too big")
+      setTimeout(() =>{
+          setInfo("")
+        },2000)
+      return;
+    }      
     setInfo("")
     setLoading(true)
     const data = new FormData()
@@ -55,14 +61,12 @@ function App() {
       setFileResult(true)
       
       } catch(error){
+        setInfo("") 
         setInfo(`opps something went wrong ${error}`)
-        setLoading(false)
-        setTimeout(() =>{
-          setInfo("")
-        },2500) 
+        setLoading(false)  
       }    
   }, [])
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop, accept: {'application/pdf':['.pdf']}})
   
 
   async function getQuery(){
@@ -89,48 +93,7 @@ function App() {
     setLoading(false)
   }
 
-   async function handleSubmit(e){
-    e.preventDefault()
-    setInfo("")
-    setLoading(true)
-    console.log("SUBMIT", file)
-    const data = new FormData()
-    console.log("FILE",file)
-    data.append("file", file)
-    // data.append("name")
-    // console.log("DATA", {name:data})
-    setTimeout(() =>{
-      setInfo("Processing")
-    },3000)
-    setTimeout(() =>{
-      setInfo("")
-    },6000)
-    try{
-      const response = await axios.post(`${url}/upload`,data, {     
-    // headers: {
-    //   "Content-Type": "multipart/form-data"
-    // }
-    })
-      console.log(response)
-      // console.log("RESULT",result.status)
-      setInfo("File Uploaded...")
-      setTimeout(() =>{
-        setInfo("")
-      },2500)
-      setLoading(false)
-      // setNamespace(result.namespace)
-      setFileResult(true)
-      
-  } catch(error){
-    setInfo(`opps something went wrong ${error}`)
-    setLoading(false)
-    setTimeout(() =>{
-      setInfo("")
-    },2500)
-  }    
-  }
-
-  function handleQuery(e){
+   function handleQuery(e){
     e.preventDefault()
     setTalk(prev => [...prev, {id,role:"human", content: query}])
     setId(id+1)
@@ -138,32 +101,6 @@ function App() {
     setLoading(true)
   }
 
-  function handleChange(e) {
-    const extension = e.target.files[0].name.slice(-3).toLowerCase()
-    if (extension !== "pdf"){
-      setInfo("Only pdf file please")
-      setTimeout(() =>{
-        setInfo("")
-      },2500)
-      return;
-    }
-    console.log(extension)
-    const size = e.target.files[0].size
-    if (size < 5*1024*1024){
-      setFile( e.target.files[0])
-      setInfo("Ready to Submit")
-    } else {
-      setInfo("File too big. Maximum 5mb")
-      setTimeout(() =>{
-        setInfo("")
-      },2500)
-    }
-    
-    // console.log("SIZE", e.target.files[0].size);
-  }
-
- 
-  // console.log("FILE",file)
   const variants = {
     open: { opacity: 1, x: 0 },
     closed: { opacity: 0, x: "-100%" },
@@ -181,12 +118,12 @@ function App() {
         
         
        
-        {loading ? <div className="loader"></div> : <motion.div style={{display: fileResult&&"none"}} whileHover={{scale:1.1}} whileTap={{scale:0.9}} className='dropZone' {...getRootProps()}>
+        {loading ? <div style={{display: fileResult&&"none"}} className="loader"></div> : <motion.div style={{display: fileResult&&"none"}} whileHover={{scale:1.1}} whileTap={{scale:0.9}} className='dropZone' {...getRootProps()}>
           <input {...getInputProps()} />
           {
             isDragActive ?
               <p>Drop the file here ...</p> :
-              <p>Drag 'n' drop a pdf file here, or click to select file</p>
+              <p>Drag 'n' drop a pdf file here, or click to select file (max size: 5mb)</p>
           }
           <span className="material-symbols-outlined">
           cloud_upload
