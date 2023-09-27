@@ -1,16 +1,19 @@
 .main{
-  margin: 0 20px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #810CA8;
   min-height: 100vh;
 }
-hr.ruler{
-  width:200px;
-  border-radius: 10px;;
+.ruler{
+  text-align: center;
+  width:100px;
+  height: 50px;
+  border-radius: 10px;
   border: 5px solid #2D033B;
-  margin:20px 20px 50px;
+  padding:10px;
+  margin:15px auto;
 }
 .pdf{
   font-family: 'Leckerli One', cursive;
@@ -24,10 +27,6 @@ hr.ruler{
   justify-content: center;
   align-items: center;
 }
-/* .logo{
-  width: 100px;
-  padding: 10px;
-} */
 
 .cyborg{
   border-radius: 50%;
@@ -35,61 +34,19 @@ hr.ruler{
   width:150px;
   margin: 20px;
 }
-.myfile{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  margin: 20px 10px 0 10px;
-  background-color: #2D033B;
-  outline: 0;
-  color:#E5B8F4;
-  border-radius: 10px;
-  border: none;
-  transition: 0.5s;
-  width:270px;
-  
-}
-.myfile input[type="file"]{
-opacity: 0;
-}
-.myfile label{
-  cursor:pointer;
-  border-radius: 15px;
-  padding:10px;
-  background-color: #e5b8f4;
-  color: #2D033B;
-}
 
-.myfile button{
-  background-color: transparent;
-  border: none;
-  background-color: #e5b8f4;
-  color: #2D033B;
-  border-radius: 15px;
-  padding:10px;
-  margin-top:10px;
-  font-size: 18px;
-}
-/* .myfile button:hover{
-  background-color: #2D033B;
-  color: #e5b8f4;
+.dropZone{
+  border: dashed 3px gray;
+  padding: 15px;
   cursor: pointer;
-} */
-
-.formContainer{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 600px;
-  background-color: #810CA8;
+  margin: 50px auto;
 }
-
+.dropZone p{
+  text-align: center;
+}
 
 .info{
-  margin:15px;
+  margin:15px auto;
   background-color: #2D033B;
   text-align: center;
   width: 270px;
@@ -151,6 +108,7 @@ opacity: 0;
 }
 .loader {
   padding-top:15px;
+  margin: 40px auto;
   border: 8px solid #f3f3f3; /* Light grey */
   border-top: 8px solid #e5b8f4;
   border-radius: 50%;
@@ -176,21 +134,35 @@ opacity: 0;
   .cyborg{
     width:150px;
   }
-  .formContainer{
-    width:400px;
-  }
+
   .talkContainer p{
     width:400px;
   }
 }
 @media only screen and (max-width: 600px) {
-  .cyborg{
+  .formContainer{
+    flex-grow: 1;
+  }
+  /* .cyborg{
     display: none;
+  } */
+  .pdf{
+    font-size: 40px;
+  }
+  .logoContainer{
+    flex-wrap: wrap;
+  }
+  .talkContainer p{
+    width:300px;
   }
   .query input{
     width:50vw;
   }
   .logoContainer h1{
     text-align: center;
+    font-size: 30px;
+  }
+  .ruler{
+    height:5px;
   }
 }

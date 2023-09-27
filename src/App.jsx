@@ -1,21 +1,26 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
+import {useDropzone} from 'react-dropzone'
 import femaleCyborg from '/femaleCyborg.png'
 import { motion } from "framer-motion"
 import './App.css'
 import Footer from './components/Footer'
+import axios from 'axios'
 
 function App() {
   const [file, setFile] = useState({name:""})
   const [fileResult,setFileResult] = useState(false)
   const [query, setQuery] = useState("")
+  const [data,setData] = useState("")
   const [namespace, setNamespace] = useState("")
   const [talk, setTalk]= useState([])
   const [id, setId]=useState(0)
   const [sendData, setSendData] = useState(false)
   const [loading, setLoading] = useState(false)
   const [info, setInfo] = useState("")
+  
   const viewRef= useRef()
-  const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com")
+  // const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com")
+  const [url, setUrl] = useState("http://192.168.1.108:5000")
   // const [url, setUrl] = useState("http://localhost:5000")
 
   useEffect(() =>{
@@ -24,6 +29,41 @@ function App() {
       
     }
   },[sendData])
+
+  const onDrop = useCallback(async acceptedFiles => {
+    console.log(acceptedFiles[0])
+    setInfo("")
+    setLoading(true)
+    const data = new FormData()
+    data.append("file",acceptedFiles[0])
+    setTimeout(() =>{
+      setInfo("Processing")
+    },3000)
+    setTimeout(() =>{
+      setInfo("")
+    },6000)
+    try{
+      const response = await axios.post(`${url}/upload`,data)
+      console.log(response)
+      const result = response.data
+      setInfo("File Uploaded...")
+      setTimeout(() =>{
+        setInfo("")
+      },2500)
+      setLoading(false)
+      setNamespace(result.namespace)
+      setFileResult(true)
+      
+      } catch(error){
+        setInfo(`opps something went wrong ${error}`)
+        setLoading(false)
+        setTimeout(() =>{
+          setInfo("")
+        },2500) 
+      }    
+  }, [])
+  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+  
 
   async function getQuery(){
     const response = await fetch(url, {
@@ -53,10 +93,12 @@ function App() {
     e.preventDefault()
     setInfo("")
     setLoading(true)
-    // console.log("SUBMIT", file)
+    console.log("SUBMIT", file)
     const data = new FormData()
+    console.log("FILE",file)
     data.append("file", file)
-    // console.log("DATA", data)
+    // data.append("name")
+    // console.log("DATA", {name:data})
     setTimeout(() =>{
       setInfo("Processing")
     },3000)
@@ -64,26 +106,23 @@ function App() {
       setInfo("")
     },6000)
     try{
-      const response = await fetch(`${url}/upload`, {
-      method: "POST",
-      mode: "cors",
-      body: data,
+      const response = await axios.post(`${url}/upload`,data, {     
     // headers: {
     //   "Content-Type": "multipart/form-data"
     // }
     })
-      const result = await response.json();
+      console.log(response)
       // console.log("RESULT",result.status)
       setInfo("File Uploaded...")
       setTimeout(() =>{
         setInfo("")
       },2500)
       setLoading(false)
-      setNamespace(result.namespace)
+      // setNamespace(result.namespace)
       setFileResult(true)
       
   } catch(error){
-    setInfo("opps something went wrong",error)
+    setInfo(`opps something went wrong ${error}`)
     setLoading(false)
     setTimeout(() =>{
       setInfo("")
@@ -140,14 +179,20 @@ function App() {
 
         <hr className='ruler'></hr>
         
-        <form style={{display: fileResult&&"none"}} className="myfile" onSubmit={handleSubmit}>
-          <label htmlFor="file" style={{display: file.name.length>0 &&"none"}}>Upload a file</label>
-          <input type="file" style={{display: file.name.length>0 &&"none"}} id="file" name="file" required onChange={handleChange} />
-          <p style={{paddingBottom:"15px"}}>{file.name.length>0 && file.name}</p>
-         
-          {loading ? <div className="loader"></div>:<motion.button whileHover={{scale:1.3}} whileTap={{scale:0.9}} 
-          type="submit">Submit</motion.button>}
-        </form>
+        
+       
+        {loading ? <div className="loader"></div> : <motion.div style={{display: fileResult&&"none"}} whileHover={{scale:1.1}} whileTap={{scale:0.9}} className='dropZone' {...getRootProps()}>
+          <input {...getInputProps()} />
+          {
+            isDragActive ?
+              <p>Drop the file here ...</p> :
+              <p>Drag 'n' drop a pdf file here, or click to select file</p>
+          }
+          <span className="material-symbols-outlined">
+          cloud_upload
+          </span>
+        </motion.div>}
+
         <motion.div className="info" initial={{opacity:0}} animate={info.length>0?"open":"closed"} 
         variants={variants}>{info}</motion.div>
 
@@ -167,9 +212,8 @@ function App() {
           <br />
           <div ref={viewRef}></div>
         </div>
-        <Footer />
       </div>
-      
+    <Footer />
        
     </div>
   )
