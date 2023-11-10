@@ -206,7 +206,7 @@ function App() {
           <div ref={viewRef}></div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
