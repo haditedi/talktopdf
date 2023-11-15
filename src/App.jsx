@@ -3,7 +3,6 @@ import { useDropzone } from "react-dropzone";
 import femaleCyborg from "/femaleCyborg.png";
 import { motion } from "framer-motion";
 import "./App.css";
-import Footer from "./components/Footer";
 import axios from "axios";
 
 function App() {
@@ -47,7 +46,6 @@ function App() {
     }, 6000);
     try {
       const response = await axios.post(`${url}/upload`, data);
-      // console.log(response);
       const result = response.data;
       setInfo("File Uploaded...");
       setTimeout(() => {
@@ -206,7 +204,6 @@ function App() {
           <div ref={viewRef}></div>
         </div>
       </div>
-      {/* <Footer /> */}
     </div>
   );
 }
