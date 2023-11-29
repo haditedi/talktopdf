@@ -8,6 +8,7 @@ import axios from "axios";
 function App() {
   const [fileResult, setFileResult] = useState(false);
   const [query, setQuery] = useState("");
+  const [webAddress, setWebAddress] = useState("");
   const [namespace, setNamespace] = useState("");
   const [talk, setTalk] = useState([]);
   const [id, setId] = useState(0);
@@ -16,9 +17,9 @@ function App() {
   const [info, setInfo] = useState("");
 
   const viewRef = useRef();
-  const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com");
+  // const [url, setUrl] = useState("https://talktopdf.ew.r.appspot.com");
   // const [url, setUrl] = useState("http://192.168.1.108:5000")
-  // const [url, setUrl] = useState("http://localhost:5000")
+  const [url, setUrl] = useState("http://localhost:5000");
 
   useEffect(() => {
     if (id > 0) {
@@ -27,7 +28,7 @@ function App() {
   }, [sendData]);
 
   const onDrop = useCallback(async (acceptedFiles) => {
-    if (acceptedFiles[0].size > 1000 * 1024) {
+    if (acceptedFiles[0].size > 5 * 1000 * 1024) {
       setInfo("file too big");
       setTimeout(() => {
         setInfo("");
@@ -64,6 +65,48 @@ function App() {
     onDrop,
     accept: { "application/pdf": [".pdf"] },
   });
+
+  async function handleWebUpload(e) {
+    e.preventDefault();
+    if (webAddress.length == 0) {
+      setInfo("Please enter web address");
+    }
+    const valid = /^(ftp|http|https):\/\/[^ "]+$/;
+    if (valid.test(webAddress)) {
+      setLoading(true);
+      setTimeout(() => {
+        setInfo("Processing");
+      }, 3000);
+      setTimeout(() => {
+        setInfo("");
+      }, 6000);
+      try {
+        const response = await axios.post(`${url}/webupload`, {
+          data: webAddress,
+        });
+        const result = response.data;
+        setInfo("File Uploaded...");
+        setTimeout(() => {
+          setInfo("");
+        }, 2500);
+        setLoading(false);
+        setNamespace(result.namespace);
+        setFileResult(true);
+      } catch (error) {
+        setInfo("");
+        setInfo(`opps something went wrong ${error}`);
+        setLoading(false);
+      }
+    } else {
+      setInfo("Please enter correct web address");
+    }
+    console.log(webAddress);
+    setTimeout(() => {
+      setInfo("");
+    }, 2000);
+    setLoading(false);
+    setWebAddress("");
+  }
 
   async function getQuery() {
     const response = await fetch(url, {
@@ -112,11 +155,13 @@ function App() {
             alt="female cyborg holding a laptop"
           />
           <h1>
-            TALK TO <span className="pdf">PDF</span>
+            PONY <span className="pdf">BOT</span>
           </h1>
         </div>
 
         <hr className="ruler"></hr>
+
+        <h1 style={{ display: fileResult && "none" }}>Upload your data</h1>
 
         {loading ? (
           <div
@@ -153,6 +198,29 @@ function App() {
           {info}
         </motion.div>
 
+        {!loading && (
+          <div style={{ display: fileResult && "none" }}>
+            <h1>Upload your website</h1>
+            <p>Enter your website: </p>
+            <form className="query" onSubmit={handleWebUpload}>
+              <input
+                type="text"
+                placeholder="https://www.yourwebsite.com"
+                onChange={(e) => setWebAddress(e.target.value)}
+                value={webAddress}
+              />
+              <button
+                style={{
+                  display: namespace.length > 0 ? "none" : "block",
+                  marginBottom: "70px",
+                }}
+                type="submit"
+              >
+                Submit
+              </button>
+            </form>
+          </div>
+        )}
         <div className="talkContainer">
           {talk.map((item) => {
             return (
@@ -169,6 +237,7 @@ function App() {
           })}
           <form className="query" onSubmit={handleQuery}>
             <input
+              disabled={namespace.length == 0 && "true"}
               style={{ textAlign: "center" }}
               required
               type="text"
