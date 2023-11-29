@@ -68,6 +68,7 @@ function App() {
 
   async function handleWebUpload(e) {
     e.preventDefault();
+    console.log(webAddress);
     if (webAddress.length == 0) {
       setInfo("Please enter web address");
     }
@@ -206,7 +207,7 @@ function App() {
               <input
                 type="text"
                 placeholder="https://www.yourwebsite.com"
-                onChange={(e) => setWebAddress(e.target.value)}
+                onChange={(e) => setWebAddress(e.target.value.toLowerCase())}
                 value={webAddress}
               />
               <button
