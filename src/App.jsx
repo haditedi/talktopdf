@@ -76,7 +76,7 @@ function App() {
     if (valid.test(webAddress)) {
       setLoading(true);
       setTimeout(() => {
-        setInfo("Processing");
+        setInfo("Processing. It may take a couple of minutes,,,");
       }, 3000);
       // setTimeout(() => {
       //   setInfo("");
@@ -86,9 +86,9 @@ function App() {
           data: webAddress,
         });
         const result = response.data;
-        console.log("RESULT", result);
+        // console.log("RESULT", result);
         if (result.message != "ok") {
-          console.log("NOT OK");
+          // console.log("NOT OK");
           setInfo("Sorry data too big");
           setTimeout(() => {
             setInfo("");
