@@ -78,15 +78,26 @@ function App() {
       setTimeout(() => {
         setInfo("Processing");
       }, 3000);
-      setTimeout(() => {
-        setInfo("");
-      }, 6000);
+      // setTimeout(() => {
+      //   setInfo("");
+      // }, 6000);
       try {
         const response = await axios.post(`${url}/webupload`, {
           data: webAddress,
         });
         const result = response.data;
-        setInfo("File Uploaded...");
+        console.log("RESULT", result);
+        if (result.message != "ok") {
+          console.log("NOT OK");
+          setInfo("Sorry data too big");
+          setTimeout(() => {
+            setInfo("");
+          }, 2500);
+          setLoading(false);
+          setWebAddress("");
+          return;
+        }
+        setInfo("Data Uploaded...");
         setTimeout(() => {
           setInfo("");
         }, 2500);
@@ -94,6 +105,7 @@ function App() {
         setNamespace(result.namespace);
         setFileResult(true);
       } catch (error) {
+        console.log("ERROR");
         setInfo("");
         setInfo(`opps something went wrong ${error}`);
         setLoading(false);
