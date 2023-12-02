@@ -204,7 +204,7 @@ function App() {
 
         <motion.div
           className="info"
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 1 }}
           animate={info.length > 0 ? "open" : "closed"}
           variants={variants}
         >
@@ -225,7 +225,7 @@ function App() {
               <button
                 style={{
                   display: namespace.length > 0 ? "none" : "block",
-                  marginBottom: "70px",
+                  margin: "30px 0 70px",
                 }}
                 type="submit"
               >
@@ -237,21 +237,39 @@ function App() {
         <div className="talkContainer">
           {talk.map((item) => {
             return (
-              <p
+              <div
                 style={{
                   fontStyle: item.role === "AI" && "italic",
+
                   whiteSpace: "pre-wrap",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                  margin: "20px 10px 20px",
                 }}
                 key={item.id}
               >
-                {item.content}
-              </p>
+                {item.role == "AI" ? (
+                  <img
+                    src={femaleCyborg}
+                    style={{ width: "50px", height: "40px", margin: "0 10px" }}
+                    alt="female cyborg holding a laptop"
+                  ></img>
+                ) : (
+                  <span
+                    className="material-symbols-outlined"
+                    style={{ width: "50px", margin: "0px 10px 0" }}
+                  >
+                    account_circle
+                  </span>
+                )}
+                <span className="talkContent">{item.content}</span>
+              </div>
             );
           })}
           <form className="query" onSubmit={handleQuery}>
             <input
               disabled={namespace.length == 0 && "true"}
-              style={{ textAlign: "center" }}
               required
               type="text"
               id="query"

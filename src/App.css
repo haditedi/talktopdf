@@ -3,9 +3,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #810CA8;
+  /* background-color: #810CA8; */
   min-height: 100vh;
 }
+
 .formContainer{
   flex-grow: 1;
 }
@@ -50,7 +51,8 @@
 
 .info{
   margin:15px auto;
-  background-color: #2D033B;
+  background-color: #810CA8;
+  /* background-color: #2D033B; */
   text-align: center;
   width: 270px;
   border-radius: 10px;
@@ -58,15 +60,21 @@
 }
 .talkContainer{
   min-height:200px;
-  display:flex;
+  white-space: pre-wrap;
+  display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  min-width: 0;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 20px 10px 20px 30px;
+  width: 650px;
 }
-.talkContainer p{
+/* .talkContainer span{
   width:500px;
   padding:10px 10px 10px 40px;
   word-wrap: break-word;
+} */
+.talkContent{
+  width:600px;
 }
 
 .query{
@@ -94,8 +102,9 @@
 }
 .query button{
   padding: 10px;
-  margin: 0 10px 0 10px;
-  background-color: #2D033B;
+  margin: 30px 10px 10px;
+  background-color: #810CA8;
+  /* background-color: #2D033B; */
   outline: 0;
   color:#E5B8F4;
   border-radius: 10px;
@@ -132,15 +141,22 @@
   .query input[type="text"]::placeholder{
     font-size: 12px;
   }
+  .talkContent{
+    width:500px;
+  }
 }
 @media only screen and (max-width: 750px) {
   .cyborg{
     width:150px;
   }
-
-  .talkContainer p{
+  .talkContainer{
+    width:500px;
+  }
+  .talkContent{
     width:400px;
   }
+
+ 
 }
 @media only screen and (max-width: 600px) {
   .pdf{
@@ -161,5 +177,12 @@
   }
   .ruler{
     height:5px;
+  }
+  .talkContainer{
+    width:300px;
+    margin:10px
+  }
+  .talkContent{
+    width:200px;
   }
 }
