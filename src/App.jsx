@@ -258,7 +258,11 @@ function App() {
                 ) : (
                   <span
                     className="material-symbols-outlined"
-                    style={{ width: "50px", margin: "0px 10px 0" }}
+                    style={{
+                      width: "50px",
+                      margin: "0px 10px 0",
+                      padding: "0",
+                    }}
                   >
                     account_circle
                   </span>
